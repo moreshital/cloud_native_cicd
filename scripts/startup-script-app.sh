@@ -27,6 +27,7 @@ server {
 }
 
 EOF
+sleep 20s
 sudo cp ~/cicd.conf /etc/nginx/sites-available/cicd.conf
 sudo unlink /etc/nginx/sites-enabled/default
 sudo ln -sf /etc/nginx/sites-available/cicd.conf /etc/nginx/sites-enabled/cicd.conf
