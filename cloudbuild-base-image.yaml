@@ -1,0 +1,42 @@
+steps:
+  - name: ubuntu
+    id: 'create_image_spec'
+    entrypoint: "bash"
+    args:
+      - '-c'
+      - |
+        echo "$_IMAGE_FAMILY"
+        echo "$_PROJECT_ID"
+        echo "$_IMAGE_ZONE"
+        echo "$_SERVICE_ACCOUNT"
+        cat <<END>packer.json
+        {
+          "builders": [
+            {
+              "image_name": "cicd-base-image-$(date +%M-%d%m%Y)",
+              "type": "googlecompute",
+              "project_id": "$_PROJECT_ID",
+              "source_image_family": "$_IMAGE_FAMILY",
+              "image_family": "ubuntu-1804-lts",
+              "ssh_username": "ubuntu",
+              "zone": "$_IMAGE_ZONE",
+              "tags": ["cloud_native_cicd","ssh"],
+              "scopes": "https://www.googleapis.com/auth/cloud-platform"
+            }
+          ],
+          "provisioners": [
+            {
+              "type": "shell",
+              "script": "scripts/startup-script-base-image.sh"
+            }
+          ]
+        }
+        END
+
+
+  - name: 'gcr.io/$_PROJECT_ID/packer'
+    args:
+      - build
+      - packer.json
+
+timeout: 20m0s

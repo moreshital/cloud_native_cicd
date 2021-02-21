@@ -1,0 +1,56 @@
+steps:
+  - name: ubuntu
+    id: 'create_image_spec'
+    entrypoint: "bash"
+    args:
+      - '-c'
+      - |
+        echo "$_IMAGE_FAMILY"
+        echo "$_PROJECT_ID"
+        echo "$_IMAGE_ZONE"
+        echo "$_SERVICE_ACCOUNT"
+        cat <<END>packer.json
+        {
+          "builders": [
+            {
+              "image_name": "beartooth-$SHORT_SHA",
+              "type": "googlecompute",
+              "project_id": "$_PROJECT_ID",
+              "source_image_family": "$_IMAGE_FAMILY",
+              "image_family": "ubuntu-1804-lts",
+              "ssh_username": "ubuntu",
+              "zone": "$_IMAGE_ZONE",
+              "tags": ["ovo-poc","ssh"],
+              "scopes": "https://www.googleapis.com/auth/cloud-platform"
+            }
+          ],
+          "provisioners": [
+            {
+              "type": "shell",
+              "script": "scripts/startup-script.sh"
+            }
+          ]
+        }
+        END
+
+
+  - name: 'gcr.io/$_PROJECT_ID/packer'
+    args:
+      - build
+      - packer.json
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: /bin/sh
+    id: Update Instance Group with latest image
+    args:
+    - '-c'
+    - |
+      InstanceGroupName=beartooth-mig
+      InstanceTemplate=beartooth-$(date +%H%M-%d%m%Y)
+      Image=`gcloud compute images list --sort-by=createTime | grep beartooth |head -n 1| awk {'print $1'}`
+      gcloud compute instance-templates create ${InstanceTemplate} --image=beartooth-$SHORT_SHA --image-project=$_PROJECT_ID --network=ovo-poc-vpc --subnet=subnet-app-a --region asia-southeast1 --scopes cloud-platform --tags="http-server","ssh","allow-http","ovo-poc"
+      gcloud beta compute instance-groups managed rolling-action start-update ${InstanceGroupName} --version template=${InstanceTemplate} --region asia-southeast1
+#      gcloud compute instance-templates create ${InstanceTemplate} --create-disk image=beartooth-$SHORT_SHA,image-project=$_PROJECT_ID,size=10G
+#      gcloud beta compute instance-groups managed rolling-action start-update ${InstanceGroupName} --version template=${InstanceTemplate} --region asia-southeast-1
+
+timeout: 20m0s

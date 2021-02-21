@@ -20,4 +20,3 @@ fs.readFile(filename, "binary", function(err, file) { //Read file
  });                                                  //header and body sent
 }).listen(3000);                                      //Listening port
 console.log("Server is listening on port 3000.")      //Terminal output
-        
