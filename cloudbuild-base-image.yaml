@@ -14,7 +14,7 @@ steps:
               "type": "googlecompute",
               "project_id": "cloudcover-sandbox",
               "source_image_family": "ubuntu-1804-lts",
-              "image_family": "ubuntu-1804-lts",
+              "image_family": "cicd_base_image",
               "ssh_username": "ubuntu",
               "zone": "asia-south1-a",
               "tags": ["cloud-native-cicd","ssh"],

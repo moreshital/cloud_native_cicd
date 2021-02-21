@@ -17,7 +17,7 @@ steps:
               "type": "googlecompute",
               "project_id": "$_PROJECT_ID",
               "source_image": "$_SOURCE_IMAGE",
-              "image_family": "base-image",
+              "image_family": "wids-app-image",
               "ssh_username": "ubuntu",
               "zone": "$_IMAGE_ZONE",
               "tags": ["ovo-poc","ssh"],

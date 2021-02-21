@@ -1,7 +1,7 @@
 module "gce-lb-http" {
-  source            = "GoogleCloudPlatform/lb-http/google"
-  version           = "~> 3.1"
-  security_policy   = google_compute_security_policy.policy.self_link
+  source  = "GoogleCloudPlatform/lb-http/google"
+  version = "~> 3.1"
+  #security_policy   = google_compute_security_policy.policy.self_link
   name              = "widslb-001"
   project           = var.project_id
   firewall_projects = [var.network_project_id]

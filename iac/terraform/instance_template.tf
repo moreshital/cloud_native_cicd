@@ -1,5 +1,5 @@
 module "compute_instance_template" {
-  source               = "../terraform_modules/instance_template"
+  source               = "../terraform-modules/instance_template"
   name_prefix          = "widsapp-it"
   description          = "wids instance template"
   instance_description = "wids prd"

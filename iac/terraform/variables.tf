@@ -19,3 +19,5 @@ variable "network" {
 variable "subnetwork" {
   default = "default"
 }
+
+variable "image_id" {}

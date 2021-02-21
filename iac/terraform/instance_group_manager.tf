@@ -1,5 +1,5 @@
 module "region_instance_group_manager" {
-  source = "../terraform-modules/instance_group_manager"
+  source = "../terraform-modules/instance_group_manager/region_instance_group_manager"
 
   project_id          = var.project_id
   autoscaling_enabled = true
