@@ -6,8 +6,8 @@ sleep 60s
 cd /home/ubuntu
 git clone git@github.com:moreshital/cloud_native_cicd.git
 npm install pm2 -g
-cd cloud_native_cicd
-pm2 start /home/ubuntu/cloud-native-cicd/app/server.js --name "cicd_demo"
+cd /home/ubuntu/cloud_native_cicd
+pm2 start /home/ubuntu/cloud_native_cicd/app/server.js --name "cicd_demo"
 sleep 10s
 pm2 restart cicd_demo
 pm2 save
