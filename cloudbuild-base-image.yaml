@@ -10,10 +10,10 @@ steps:
         {
           "builders": [
             {
-              "image_name": "cicd-app-image-$(date +%M-%d%m%Y)",
+              "image_name": "cicd-base-image-$(date +%M-%d%m%Y)",
               "type": "googlecompute",
               "project_id": "cloudcover-sandbox",
-              "source_image_family": "cicd-base-image-02-21022021",
+              "source_image_family": "ubuntu-1804-lts",
               "image_family": "ubuntu-1804-lts",
               "ssh_username": "ubuntu",
               "zone": "asia-south1-a",
