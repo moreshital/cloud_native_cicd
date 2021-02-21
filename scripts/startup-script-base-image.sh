@@ -35,7 +35,7 @@ cat <<EOF >/home/ubuntu/.ssh/config
   IdentityFile /home/ubuntu/.ssh/id_github
 EOF
 chmod 400 /home/ubuntu/.ssh/config
-ssh-keyscan -t rsa bitbucket.org > /home/ubuntu/.ssh/known_hosts
+ssh-keyscan -t rsa github.com > /home/ubuntu/.ssh/known_hosts
 
 #Install Stackdriver agent to monitor memory
 #curl -sSO https://dl.google.com/cloudagents/add-monitoring-agent-repo.sh

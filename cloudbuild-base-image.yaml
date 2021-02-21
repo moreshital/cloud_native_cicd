@@ -5,18 +5,15 @@ steps:
     args:
       - '-c'
       - |
-        echo "$_IMAGE_FAMILY"
-        echo "$_PROJECT_ID"
-        echo "$_IMAGE_ZONE"
         echo "$_SERVICE_ACCOUNT"
         cat <<END>packer.json
         {
           "builders": [
             {
-              "image_name": "cicd-base-image-$(date +%M-%d%m%Y)",
+              "image_name": "cicd-app-image-$(date +%M-%d%m%Y)",
               "type": "googlecompute",
               "project_id": "cloudcover-sandbox",
-              "source_image_family": "ubuntu-1804-lts",
+              "source_image_family": "cicd-base-image-02-21022021",
               "image_family": "ubuntu-1804-lts",
               "ssh_username": "ubuntu",
               "zone": "asia-south1-a",
@@ -34,7 +31,7 @@ steps:
         END
 
 
-  - name: 'gcr.io/$_PROJECT_ID/packer'
+  - name: 'gcr.io/cloudcover-sandbox/packer'
     args:
       - build
       - packer.json
