@@ -15,12 +15,12 @@ steps:
             {
               "image_name": "cicd-base-image-$(date +%M-%d%m%Y)",
               "type": "googlecompute",
-              "project_id": "$_PROJECT_ID",
-              "source_image_family": "$_IMAGE_FAMILY",
+              "project_id": "cloudcover-sandbox",
+              "source_image_family": "ubuntu-1804-lts",
               "image_family": "ubuntu-1804-lts",
               "ssh_username": "ubuntu",
-              "zone": "$_IMAGE_ZONE",
-              "tags": ["cloud_native_cicd","ssh"],
+              "zone": "asia-south1-a",
+              "tags": ["cloud-native-cicd","ssh"],
               "scopes": "https://www.googleapis.com/auth/cloud-platform"
             }
           ],
@@ -39,4 +39,4 @@ steps:
       - build
       - packer.json
 
-timeout: 20m0s
+timeout: 1200s
