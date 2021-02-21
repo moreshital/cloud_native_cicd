@@ -22,7 +22,7 @@ server {
         root /home/ubuntu/cloud_native_cicd/app;
         location ~* \.(js)$ {
             proxy_pass http://localhost:3000;
-            proxy_set_header Host $host;
+            proxy_set_header Host \$host;
         }
 }
 
