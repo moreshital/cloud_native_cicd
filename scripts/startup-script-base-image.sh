@@ -36,7 +36,6 @@ cat <<EOF >/home/ubuntu/.ssh/config
 EOF
 chmod 400 /home/ubuntu/.ssh/config
 ssh-keyscan -t rsa bitbucket.org > /home/ubuntu/.ssh/known_hosts
-sudo unlink /etc/nginx/sites-enabled/default
 
 #Install Stackdriver agent to monitor memory
 #curl -sSO https://dl.google.com/cloudagents/add-monitoring-agent-repo.sh
