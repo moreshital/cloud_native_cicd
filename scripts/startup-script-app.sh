@@ -1,5 +1,6 @@
 #!/bin/bash
 sudo apt-get update -y
+sudo apt-get install nginx nginx-common -y
 source ~/.profile && source ~/.nvm/nvm.sh && source ~/.bashrc
 source /home/ubuntu/google-cloud-sdk/completion.bash.inc && source /home/ubuntu/google-cloud-sdk/path.bash.inc
 sleep 60s
