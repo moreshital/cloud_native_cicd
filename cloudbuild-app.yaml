@@ -16,7 +16,7 @@ steps:
               "image_name": "$_APP_NAME-$SHORT_SHA",
               "type": "googlecompute",
               "project_id": "$_PROJECT_ID",
-              "source_image": "$_SOURCE_IMAGE",
+              "source_image_family": "$_SOURCE_IMAGE_FAMILY",
               "image_family": "wids-app-image",
               "ssh_username": "ubuntu",
               "zone": "$_IMAGE_ZONE",

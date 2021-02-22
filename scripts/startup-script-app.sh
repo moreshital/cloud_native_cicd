@@ -16,9 +16,6 @@ cat  > ~/cicd.conf << EOF
 server {
         listen 80;
         server_name cloud_native.demo.com;
-        if (\$http_x_forwarded_proto = "http") {
-        return 307 https://\$host\$request_uri;
-           }
         #// Change this line to your actual build directory path
         root /home/ubuntu/cloud_native_cicd/app;
         location ~* \.(js)$ {

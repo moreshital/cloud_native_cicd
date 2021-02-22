@@ -1,0 +1,39 @@
+steps:
+  - name: ubuntu
+    id: 'create_image_spec'
+    entrypoint: "bash"
+    args:
+      - '-c'
+      - |
+        echo "$_SERVICE_ACCOUNT"
+        cat <<END>packer.json
+        {
+          "builders": [
+            {
+              "image_name": "cicd-base-image-$(date +%M-%d%m%Y)",
+              "type": "googlecompute",
+              "project_id": "cloudcover-sandbox",
+              "source_image_family": "ubuntu-1804-lts",
+              "image_family": "cicd_base_image",
+              "ssh_username": "ubuntu",
+              "zone": "asia-south1-a",
+              "tags": ["cloud-native-cicd","ssh"],
+              "scopes": "https://www.googleapis.com/auth/cloud-platform"
+            }
+          ],
+          "provisioners": [
+            {
+              "type": "shell",
+              "script": "scripts/startup-script-base-image.sh"
+            }
+          ]
+        }
+        END
+
+
+  - name: 'gcr.io/cloudcover-sandbox/packer'
+    args:
+      - build
+      - packer.json
+
+timeout: 1200s

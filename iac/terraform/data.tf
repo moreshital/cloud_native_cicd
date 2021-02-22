@@ -1,10 +1,10 @@
 data "google_compute_image" "image" {
-  family  = "base-image"
+  family  = "wids-app-image"
   project = "cloudcover-sandbox"
 }
 
 data "google_compute_image" "image_family" {
-  family  = "base-image"
+  family  = "wids-app-image"
   project = "cloudcover-sandbox"
 }
 
