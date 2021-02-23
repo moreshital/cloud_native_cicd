@@ -25,6 +25,7 @@ else "Tests Failed"
   exit 0
 fi
 
+sleep 20s
 echo "Starting PM2 Process"
 NODE_ENV=$_NODE_ENV pm2 start /home/ubuntu/cloud_native_cicd/app/index.js --name "cicd_demo"
 sleep 10s
