@@ -1,0 +1,66 @@
+{
+  "name": "hello-world",
+  "description": "Nodejs test / demo server application",
+  "version": "0.0.0",
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
+  "bugs": "https://github.com/bahmutov/hello-world/issues",
+  "config": {
+    "pre-git": {
+      "commit-msg": "simple",
+      "pre-commit": [
+        "npm run ci"
+      ],
+      "pre-push": [
+        "npm run size"
+      ],
+      "post-commit": [],
+      "post-merge": []
+    }
+  },
+  "private": true,
+  "files": [
+    "index.js"
+  ],
+  "homepage": "https://github.com/bahmutov/hello-world#readme",
+  "keywords": [
+    "demo",
+    "hello",
+    "node",
+    "nodejs",
+    "server"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bahmutov/hello-world.git"
+  },
+  "scripts": {
+    "issues": "git-issues",
+    "lint": "standard --verbose --fix *.js",
+    "pretest": "npm run lint",
+    "size": "t=\"$(npm pack .)\"; wc -c \"${t}\"; tar tvf \"${t}\"; rm \"${t}\";",
+    "test": "npm run unit",
+    "unit": "mocha spec.js",
+    "commit": "commit-wizard",
+    "start": "node index.js",
+    "e2e-test": "curl $NOW_URL",
+    "pretty": "prettier-standard *.js",
+    "prelint": "npm run pretty",
+    "ci": "start-server-and-test start http://localhost:3000 unit"
+  },
+  "devDependencies": {
+    "ejs": "^2.7.1",
+    "supertest": "",
+    "express": "^4.17.1",
+    "axios": "0.17.1",
+    "git-issues": "1.3.1",
+    "mocha": "2.4.5",
+    "pre-git": "3.7.0",
+    "prettier-standard": "7.0.3",
+    "snap-shot-it": "4.0.1",
+    "standard": "10.0.3",
+    "start-server-and-test": "1.0.0"
+  },
+  "dependencies": {}
+}
