@@ -11,11 +11,11 @@ cd /home/ubuntu/cloud_native_cicd
 
 cd /home/ubuntu/cloud_native_cicd/app
 echo "Running npm install"
-su - ubuntu -c "npm install"
+npm install
 
 
 echo "Running npm ci"
-su - ubuntu -c "npm run ci"
+npm run ci
 
 if [ $? == 0 ]
 then
@@ -25,19 +25,22 @@ else "Tests Failed"
   exit 0
 fi
 
-
-su - ubuntu -c 'NODE_ENV=$_NODE_ENV pm2 start /home/ubuntu/cloud_native_cicd/app/index.js --name "cicd_demo"''
-
+echo "Starting PM2 Process"
+NODE_ENV=$_NODE_ENV pm2 start /home/ubuntu/cloud_native_cicd/app/index.js --name "cicd_demo"
 sleep 10s
+
 pm2 restart cicd_demo
+
+echo "Taking dump of PM2 process"
 pm2 save
+
 cat  > ~/cicd.conf << EOF
 server {
         listen 80;
         server_name cloud_native.demo.com;
         #// Change this line to your actual build directory path
         root /home/ubuntu/cloud_native_cicd/app;
-        location ~* \.(js)$ {
+        location / {
             proxy_pass http://localhost:3000;
             proxy_set_header Host \$host;
         }
