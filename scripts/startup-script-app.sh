@@ -1,4 +1,5 @@
 #!/bin/bash
+NODE_ENV=production
 echo "NODE_ENV" $NODE_ENV
 sudo apt-get update -y
 #sudo apt-get install nginx nginx-common -y
