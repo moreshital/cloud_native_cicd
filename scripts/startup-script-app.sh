@@ -37,6 +37,7 @@ pm2 restart cicd_demo
 
 echo "Taking dump of PM2 process"
 pm2 save
+sudo env PATH=$PATH:/home/ubuntu/.nvm/versions/node/v12.16.2/bin /home/ubuntu/.nvm/versions/node/v12.16.2/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu
 
 cat /home/ubuntu/.pm2/dump.pm2 | grep NODE_ENV
 cat  > ~/cicd.conf << EOF
