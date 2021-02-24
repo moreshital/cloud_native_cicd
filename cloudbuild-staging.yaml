@@ -1,7 +1,5 @@
 steps:
   - name: ubuntu
-    id: 'create_image_spec'
-    entrypoint: "bash"
     args:
       - '-c'
       - |
@@ -17,14 +15,14 @@ steps:
               "type": "googlecompute",
               "project_id": "$_PROJECT_ID",
               "source_image_family": "$_SOURCE_IMAGE_FAMILY",
-              "image_family": "wids-app-image",
+              "image_family": "wids-app-staging-image",
               "ssh_username": "ubuntu",
               "zone": "$_IMAGE_ZONE",
-              "tags": ["ovo-poc","ssh"],
+              "tags": ["cloud-native-cicd","ssh"],
               "scopes": "https://www.googleapis.com/auth/cloud-platform"
             }
           ],
-          "provisioners": [
+        "provisioners": [
             {
               "type": "shell",
               "script": "$_STARTUP_SCRIPT_PATH"
@@ -32,39 +30,21 @@ steps:
           ]
         }
         END
-
-
-  - name: 'gcr.io/$_PROJECT_ID/packer'
+    id: create_image_spec
+    entrypoint: bash
+  - name: gcr.io/$_PROJECT_ID/packer
     args:
       - build
       - packer.json
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: /bin/sh
-    id: Update Instance Group with latest image
-    args:
-    - '-c'
-    - |
-      InstanceGroupName=$_APP_NAME-mig
-      InstanceTemplate=$_APP_NAME-$SHORT_SHA-$(date +%H%M-%d%m%Y)
-      gcloud compute instance-templates create ${InstanceTemplate} --image=$_APP_NAME-$SHORT_SHA --image-project=$_PROJECT_ID --network=$_NETWORK_NAME --subnet=$_SUBNET --region $_REGION --scopes cloud-platform --tags="http-server","ssh","allow-http","cloud-native-cicd"
-      gcloud beta compute instance-groups managed rolling-action start-update ${InstanceGroupName} --version template=${InstanceTemplate} --region $_REGION
-
-
-  # This step pushes the manifest back to gcp-cicd-env
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: Push deployment for production environment
-    entrypoint: /bin/sh
-    args:
-    - '-c'
-    - |
-      cd $REPO_NAME && \
-      sed
-      git add ${_PRODUCTION_KUBERNETES_CONFIG_FILE_NAME} && \
-      git commit -m "Deploying image gcr.io/${PROJECT_ID}/${REPO_NAME}:${SHORT_SHA}
-      Built from commit ${COMMIT_SHA} Author: $(git log --format='%an <%ae>' -n 1 HEAD)" || true && \
-      git push origin ${_PRODUCTION_CANDIDATE_BRANCH} && \
-    volumes:
-    - name: 'ssh'
-      path: /root/.ssh
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    entrypoint: /bin/sh
+#    id: Update Instance Group with latest image
+#    args:
+#    - '-c'
+#    - |
+#      InstanceGroupName=$_APP_NAME-rigm
+#      InstanceTemplate=$_APP_NAME-$SHORT_SHA-$(date +%H%M-%d%m%Y)
+#      gcloud compute instance-templates create ${InstanceTemplate} --image=$_APP_NAME-$SHORT_SHA --image-project=$_PROJECT_ID --network=$_NETWORK_NAME --subnet=$_SUBNET --region $_REGION --scopes cloud-platform --tags="http-server","ssh","allow-http","cloud-native-cicd"
+#      gcloud beta compute instance-groups managed rolling-action start-update ${InstanceGroupName} --version template=${InstanceTemplate} --region $_REGION
 timeout: 20m0s
