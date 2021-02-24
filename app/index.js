@@ -1,12 +1,18 @@
 var express = require('express')
 var app = express()
 
-app.get('/', function (req, res) {
-  res.send('Welcome to WIDS 2021!')
+app.set('view engine', 'ejs')
+
+app.get('/', (req, res) => {
+  res.render('home')
+});
+
+app.get('/test', function (req, res) {
+  res.send('Test is passed')
 })
 
 app.get('/environment', function (req, res) {
-  res.send(process.env.NODE_ENV)
+ res.render(process.env.NODE_ENV)
 })
 
 app.listen(3000, function () {
