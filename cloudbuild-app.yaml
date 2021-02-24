@@ -1,7 +1,5 @@
 steps:
   - name: ubuntu
-    id: 'create_image_spec'
-    entrypoint: "bash"
     args:
       - '-c'
       - |
@@ -20,31 +18,21 @@ steps:
               "image_family": "wids-app-image",
               "ssh_username": "ubuntu",
               "zone": "$_IMAGE_ZONE",
-              "tags": ["ovo-poc","ssh"],
+              "tags": ["cloud-native-cicd","ssh"],
               "scopes": "https://www.googleapis.com/auth/cloud-platform"
-              "metadata": {
-
-                }
             }
           ],
-          "provisioners": [
-             {
+        "provisioners": [
+            {
               "type": "shell",
-              "expect_disconnect": true,
-              "pause_before": "15s",
-              "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-             "start_retry_timeout": "30m",
-              "inline": [
-                "echo $_NODE_ENV && export NODE_ENV=$_NODE_ENV && $_STARTUP_SCRIPT_PATH $NODE_ENV ",
-
-            ]
-        }
+              "script": "$_STARTUP_SCRIPT_PATH"
+            }
           ]
         }
         END
-
-
-  - name: 'gcr.io/$_PROJECT_ID/packer'
+    id: create_image_spec
+    entrypoint: bash
+  - name: gcr.io/$_PROJECT_ID/packer
     args:
       - build
       - packer.json
@@ -55,8 +43,8 @@ steps:
     args:
     - '-c'
     - |
-      InstanceGroupName=$_APP_NAME-mig
+      InstanceGroupName=$_APP_NAME-rigm
       InstanceTemplate=$_APP_NAME-$SHORT_SHA-$(date +%H%M-%d%m%Y)
-      gcloud compute instance-templates create ${InstanceTemplate} --image=$_APP_NAME-$SHORT_SHA --image-project=$_PROJECT_ID --network=$_NETWORK_NAME --subnet=$_SUBNET --region $_REGION --scopes cloud-platform --tags="http-server","ssh","allow-http","ovo-poc"
+      gcloud compute instance-templates create ${InstanceTemplate} --image=$_APP_NAME-$SHORT_SHA --image-project=$_PROJECT_ID --network=$_NETWORK_NAME --subnet=$_SUBNET --region $_REGION --scopes cloud-platform --tags="http-server","ssh","allow-http","cloud-native-cicd"
       gcloud beta compute instance-groups managed rolling-action start-update ${InstanceGroupName} --version template=${InstanceTemplate} --region $_REGION
 timeout: 20m0s
