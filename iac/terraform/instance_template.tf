@@ -13,7 +13,7 @@ module "compute_instance_template" {
   }
   tags                    = ["ssh", "cloud-native-cicd", "http-server"]
   can_ip_forward          = false
-  metadata_startup_script = "su - ubuntu -c 'pm2 resurrect' && sudo service nginx restart"
+  metadata_startup_script = "su - ubuntu -c 'pm2 resurrect' >> /home/ubuntu/pm2_out && sudo service nginx restart"
   region                  = "asia-south1"
   enable_display          = false
   enable_shielded_vm      = false

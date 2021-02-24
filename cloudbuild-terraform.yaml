@@ -58,6 +58,6 @@ steps:
             echo "*************** TERRAFOM APPLY ******************"
             echo "******* At environment: ${_NODE_ENV} ********"
             echo "*************************************************"
-            terraform apply || exit 1
+            terraform apply -auto-approve || exit 1
 
 # [END tf-apply]
