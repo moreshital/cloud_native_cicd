@@ -9,6 +9,7 @@ steps:
         echo "$_PROJECT_ID"
         echo "$_IMAGE_ZONE"
         echo "$_SERVICE_ACCOUNT"
+        echo "$_NODE_ENV"
         cat <<END>packer.json
         {
           "builders": [
@@ -27,7 +28,7 @@ steps:
           "provisioners": [
             {
               "type": "shell",
-              "script": "$_STARTUP_SCRIPT_PATH"
+              "script": "$_STARTUP_SCRIPT_PATH $_NODE_ENV"
             }
           ]
         }
