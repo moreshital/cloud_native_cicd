@@ -9,7 +9,6 @@ steps:
         echo "$_PROJECT_ID"
         echo "$_IMAGE_ZONE"
         echo "$_SERVICE_ACCOUNT"
-        echo "$_NODE_ENV"
         cat <<END>packer.json
         {
           "builders": [
@@ -23,13 +22,23 @@ steps:
               "zone": "$_IMAGE_ZONE",
               "tags": ["ovo-poc","ssh"],
               "scopes": "https://www.googleapis.com/auth/cloud-platform"
+              "metadata": {
+
+                }
             }
           ],
           "provisioners": [
-            {
+             {
               "type": "shell",
-              "script": "$_STARTUP_SCRIPT_PATH $_NODE_ENV"
-            }
+              "expect_disconnect": true,
+              "pause_before": "15s",
+              "execute_command": "echo 'ubuntu' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+             "start_retry_timeout": "30m",
+              "inline": [
+                "echo $_NODE_ENV && export NODE_ENV=$_NODE_ENV && $_STARTUP_SCRIPT_PATH $NODE_ENV ",
+
+            ]
+        }
           ]
         }
         END

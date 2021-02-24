@@ -1,5 +1,4 @@
 #!/bin/bash
-NODE_ENV=$1
 echo "NODE_ENV" $NODE_ENV
 sudo apt-get update -y
 #sudo apt-get install nginx nginx-common -y
@@ -30,7 +29,7 @@ fi
 sudo killall node
 sleep 10s
 echo "Starting PM2 Process"
-NODE_ENV=$_NODE_ENV pm2 start /home/ubuntu/cloud_native_cicd/app/index.js --name "cicd_demo"
+NODE_ENV=$NODE_ENV pm2 start /home/ubuntu/cloud_native_cicd/app/index.js --name "cicd_demo"
 sleep 10s
 
 pm2 restart cicd_demo
