@@ -37,6 +37,7 @@ pm2 restart cicd_demo
 echo "Taking dump of PM2 process"
 pm2 save
 
+cat /home/ubuntu/.pm2/dump.pm2 | grep NODE_ENV
 cat  > ~/cicd.conf << EOF
 server {
         listen 80;
