@@ -20,7 +20,7 @@ exports.cicd_demo_events = (event, context) => {
     console.log(JSON.stringify(build));
     const repo = config.getRepo(build.substitutions.REPO_NAME)
 
-    if (repo && build.substitutions.TAG_NAME) {
+    if (repo && build.substitutions.SHORT_SHA) {
         cloudbuild_utils.handleProductionDeployment(build, repo)
             .then(() => {}).catch(err => console.log(err));
     } else if (repo) {
