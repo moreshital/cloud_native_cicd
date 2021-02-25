@@ -7,4 +7,4 @@ npm test
 npm start
 ```
 
-Latest image running on Prod is wids-  
+Latest image running on Prod is wids-xx
