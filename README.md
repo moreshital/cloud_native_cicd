@@ -6,5 +6,4 @@ npm install
 npm test
 npm start
 ```
-
-Latest image running on Prod is wids-xxx
+test
