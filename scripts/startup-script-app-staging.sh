@@ -17,7 +17,7 @@ npm install
 
 
 echo "Running npm ci"
-npm run ci
+NODE_ENV=$NODE_ENV npm run ci
 
 if [ $? == 0 ]
 then
