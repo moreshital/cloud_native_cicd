@@ -37,14 +37,4 @@ steps:
       - build
       - packer.json
 
-#  - name: 'gcr.io/cloud-builders/gcloud'
-#    entrypoint: /bin/sh
-#    id: Update Instance Group with latest image
-#    args:
-#    - '-c'
-#    - |
-#      InstanceGroupName=$_APP_NAME-rigm
-#      InstanceTemplate=$_APP_NAME-$SHORT_SHA-$(date +%H%M-%d%m%Y)
-#      gcloud compute instance-templates create ${InstanceTemplate} --image=$_APP_NAME-$SHORT_SHA --image-project=$_PROJECT_ID --network=$_NETWORK_NAME --subnet=$_SUBNET --region $_REGION --scopes cloud-platform --tags="http-server","ssh","allow-http","cloud-native-cicd"
-#      gcloud beta compute instance-groups managed rolling-action start-update ${InstanceGroupName} --version template=${InstanceTemplate} --region $_REGION
-#timeout: 20m0s
+timeout: 20m0s
