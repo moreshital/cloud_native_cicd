@@ -12,7 +12,7 @@ app.get('/test', function (req, res) {
 })
 
 app.get('/environment', function (req, res) {
- res.render(process.env.NODE_ENV)
+ res.render(process.env.NODE_ENV + '-env')
 })
 
 app.listen(3000, function () {
