@@ -88,7 +88,7 @@ steps:
       - '-c'
       - |
         touch image.info && \
-        echo $_APP_NAME-$SHORT_SHA >> image.info && \
+        echo "$_APP_NAME-$SHORT_SHA" >> image.info && \
         cat image.info && \
         cd $REPO_NAME && \
         git add image.info && \
