@@ -37,4 +37,34 @@ steps:
       - build
       - packer.json
 
+  # This step generates the new manifest for production
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: This updated the image.info with latest image
+    entrypoint: /bin/sh
+    args:
+    - '-c'
+    - |
+      cd $REPO_NAME && \
+      echo $_APP_NAME-$SHORT_SHA >> image.info
+    volumes:
+    - name: 'ssh'
+      path: /root/.ssh
+
+  # This step pushes the manifest back to gcp-cicd-env
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: Push deployment manifest for production environment
+    entrypoint: /bin/sh
+    args:
+    - '-c'
+    - |
+      cd $REPO_NAME && \
+      git add image.info && \
+      git commit -m "Latest image $_APP_NAME-$SHORT_SHA
+      Built from commit ${COMMIT_SHA} Author: $(git log --format='%an <%ae>' -n 1 HEAD)" || true && \
+      git push origin ${_PRODUCTION_CANDIDATE_BRANCH} && \
+      git tag 'release-'${SHORT_SHA} || true && \
+      git push origin 'release-'${SHORT_SHA}
+    volumes:
+    - name: 'ssh'
+      path: /root/.ssh
 timeout: 20m0s
