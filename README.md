@@ -1,4 +1,4 @@
-cnci_gcp
+cnci_gcp-final
 ```sh
 git clone git@github.com:moreshital/cloud-native-cicd.git
 cd hello-world
