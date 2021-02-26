@@ -42,12 +42,7 @@ const handleProductionDeployment = async (data, repo) => {
             + '` for ' + commitLink + ' in stage `' + failedStep.id + '`';
         resColor = config.colors.FAILURE;
     }
-    cosole.log({
-        'fallback': resText,
-        'text': resText,
-        'color': resColor,
-        'channel': repo.channel
-    })
+
     if (resText) await slack_utils.sendSlackMsg({
         'attachments': [{
             'fallback': resText,

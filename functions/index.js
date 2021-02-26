@@ -17,12 +17,10 @@ function isDuplicate(req) {
 
 exports.cicd_demo_events = (event, context) => {
     const build = eventToBuild(event.data);
-    //console.log(JSON.stringify(build));
+    console.log(JSON.stringify(build));
     const repo = config.getRepo(build.substitutions.REPO_NAME)
-    cosole.log({build, repo, "check": "krle bhai"})
 
-    if (repo && build.substitutions.SHORT_SHA) {
-      cosole.log({data, repo, "check": "krle bhai"})
+    if (repo && build.substitutions.TAG_NAME) {
         cloudbuild_utils.handleProductionDeployment(build, repo)
             .then(() => {}).catch(err => console.log(err));
     } else if (repo) {
