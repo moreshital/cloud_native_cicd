@@ -80,7 +80,6 @@ steps:
         touch image.info && \
         echo "$_APP_NAME-$SHORT_SHA" >> image.info && \
         cat image.info && \
-        cd $REPO_NAME && \
         git add image.info && \
         git commit -m "Latest image $_APP_NAME-$SHORT_SHA" && \
         git push origin ${_PRODUCTION_CANDIDATE_BRANCH} && \
