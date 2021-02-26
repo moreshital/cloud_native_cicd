@@ -87,18 +87,9 @@ steps:
     args:
       - '-c'
       - |
+        touch image.info && \
         echo $_APP_NAME-$SHORT_SHA >> image.info && \
-        cat image.info
-    volumes:
-      - name: ssh
-        path: /root/.ssh
-
-  - name: gcr.io/cloud-builders/gcloud
-    id: Push deployment image for production environment
-    entrypoint: /bin/sh
-    args:
-      - '-c'
-      - |
+        cat image.info && \
         cd $REPO_NAME && \
         git add image.info && \
         git commit -m "Latest image $_APP_NAME-$SHORT_SHA Built from commit ${COMMIT_SHA} Author: $(git log --format='%an <%ae>' -n 1 HEAD)" || true && \
