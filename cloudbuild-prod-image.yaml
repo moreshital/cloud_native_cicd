@@ -77,26 +77,14 @@ steps:
         cd $REPO_NAME && \
         git checkout ${_PRODUCTION_CANDIDATE_BRANCH} && \
         git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)')
-    volumes:
-      - name: ssh
-        path: /root/.ssh
-
-  - name: gcr.io/cloud-builders/gcloud
-    id: This updated the image.info with latest image
-    entrypoint: /bin/sh
-    args:
-      - '-c'
-      - |
         touch image.info && \
-        echo $_APP_NAME-$SHORT_SHA >> image.info && \
+        echo "$_APP_NAME-$SHORT_SHA" >> image.info && \
         cat image.info && \
-        cd $REPO_NAME && \
         git add image.info && \
-        git commit -m "Latest image $_APP_NAME-$SHORT_SHA Built from commit ${COMMIT_SHA} Author: $(git log --format='%an <%ae>' -n 1 HEAD)" || true && \
+        git commit -m "Latest image $_APP_NAME-$SHORT_SHA" && \
         git push origin ${_PRODUCTION_CANDIDATE_BRANCH} && \
         git tag 'release-'${SHORT_SHA} || true && \
         git push origin 'release-'${SHORT_SHA}
-
     volumes:
       - name: ssh
         path: /root/.ssh
