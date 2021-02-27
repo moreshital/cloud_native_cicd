@@ -8,7 +8,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/test', function (req, res) {
-  res.send('Test is passed!!')
+  res.send('Test is passed')
 })
 
 app.get('/environment', function (req, res) {
