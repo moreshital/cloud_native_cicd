@@ -1,6 +1,4 @@
 terraform {
-  required_version = "~> 0.12.29"
-
   backend "gcs" {
     bucket = "wids-terraform-state"
     prefix = "infrastructure/demo/wids"
