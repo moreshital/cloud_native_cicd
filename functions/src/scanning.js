@@ -12,21 +12,21 @@ const auth = new google.auth.GoogleAuth({
 const imageDigest = async (imageId, tag) => {
     const authClient = await auth.getClient();
     const tokenRes = await authClient.getAccessToken();
-    const apiConfig = {
+    const apiConfig = { 
         headers: {
             'Authorization': 'Bearer ' + tokenRes.token
         }
     }
 
-    const apiRes = await axios.get('https://gcr.io/v2/'
-        + config.GCP_PROJECT_ID + '/'
+    const apiRes = await axios.get('https://gcr.io/v2/' 
+        + config.GCP_PROJECT_ID + '/' 
         + imageId + '/tags/list', apiConfig);
-
+    
     const image = apiRes.data;
     const req_digests = _.filter(
-        Object.keys(image.manifest),
+        Object.keys(image.manifest), 
         (digest) => {
-            return image.manifest[digest].tag.length > 0
+            return image.manifest[digest].tag.length > 0 
                 && image.manifest[digest].tag[0] == tag
         });
     if (req_digests.length > 0) {
@@ -42,8 +42,8 @@ const imageUrl = async (imageId, tag) => {
 }
 
 const sendApproval =  async (repo, cloudbuild_data) => {
-    const commitLink =  '<' + repo.repoLink + 'commit/' + cloudbuild_data.substitutions.SHORT_SHA
-                + '|' + repo.name + '/' + cloudbuild_data.substitutions.BRANCH_NAME
+    const commitLink =  '<' + repo.repoLink + 'commit/' + cloudbuild_data.substitutions.SHORT_SHA 
+                + '|' + repo.name + '/' + cloudbuild_data.substitutions.BRANCH_NAME 
                 + '/' + cloudbuild_data.substitutions.SHORT_SHA +'>';
 
     const approvalInputMsg = 'Approve rollout to production for ' + commitLink + '?';
@@ -62,7 +62,7 @@ const scanProgress = async (repo, cloudbuild_data) => {
     const url = await imageUrl(repo.gcrImageId, cloudbuild_data.substitutions.SHORT_SHA);
 
     await slack_utils.sendSlackMsg({
-        'attachments': [{
+        'attachments': [{ 
             'fallback': 'Image Vulnerability scan is in progress. Check result at ' + url,
             'text': 'Image vulnerability scan is in `progress`. You can check results <'+ url + '|here>'
         }]
@@ -73,5 +73,4 @@ const scanProgress = async (repo, cloudbuild_data) => {
 
 module.exports = {
     scanProgress: scanProgress
-
 }
