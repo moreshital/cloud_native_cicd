@@ -20,4 +20,6 @@ variable "subnetwork" {
   default = "default"
 }
 
-variable "image_id" {}
+variable "image_id" {
+default = "widsapp-5b2936c"
+}
